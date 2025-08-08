@@ -43,6 +43,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('user_id');
+            $table->text('json_schema')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -55,7 +56,7 @@ return new class extends Migration
             $table->text('json_data')->nullable();
             $table->timestamps();
 
-            $table->foreign('list_id')->references('id')->on('lists')->onDelete('cascade');
+            $table->foreign('list_id')->references('id')->on('tracking_lists')->onDelete('cascade');
         });
     }
 
@@ -65,5 +66,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tasks');
+        Schema::dropIfExists('repeat_tasks');
+        Schema::dropIfExists('tracking_lists');
+        Schema::dropIfExists('list_items');
     }
 };

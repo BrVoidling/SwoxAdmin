@@ -45,4 +45,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    public function repeatTasks()
+    {
+        return $this->hasMany(RepeatTask::class);
+    }
+
+    public function trackingLists()
+    {
+        return $this->hasMany(TrackingList::class);
+    }
 }
