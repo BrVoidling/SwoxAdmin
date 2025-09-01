@@ -13,4 +13,7 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\MainController::class, 'dashboard'])->name('dashboard');
 
+    Route::get('/form', [App\Http\Controllers\FormController::class, 'index'])->name('form');
+    Route::get('/forms/{id}', [App\Http\Controllers\FormController::class, 'show'])->name('forms.show');
+
 });
