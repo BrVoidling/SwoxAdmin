@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { axios } from "./axios";
 
 export const useStore = defineStore("forms", {
     state: () => ({
-        forms: [],
+        forms: {},
         formToRowIds: {},
         questions: [],
     }),
@@ -10,19 +11,18 @@ export const useStore = defineStore("forms", {
         doubleCount: (state) => state.count * 2,
     },
     actions: {
+        async fetchForms() {
+            const response = await axios.get("/formmaker/form");
+            this.forms = response.data;
+        },
         addFrom(form) {
-            this.forms.push(form);
+            this.forms[form.id] = form;
         },
         updateForm(form) {
-            this.forms = this.forms.map((f) => {
-                if (f.id === form.id) {
-                    return form;
-                }
-                return f;
-            });
+            this.forms[form.id] = form;
         },
         removeForm(id) {
-            this.forms = this.forms.filter((f) => f.id !== id);
+            delete this.forms[id];
         },
     },
 });

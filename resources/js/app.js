@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import { createPinia,  } from 'pinia';
 import { createRouter, createWebHistory } from 'vue-router';
 
+import App from './App.vue';
 import Forms from './Pages/Forms.vue';
 import Questions from './Pages/Questions.vue';
 
@@ -14,13 +15,7 @@ const router = createRouter({
     ],
 });
 
-const app = createApp({
-    data() {
-        return {
-            csrfToken: window.Laravel.csrfToken
-        };
-    }
-});
+const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);

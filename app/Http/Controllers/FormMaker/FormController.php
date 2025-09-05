@@ -12,7 +12,19 @@ class FormController extends Controller
     {
         $forms = Form::all();
 
-        return view('formmaker.form', compact('forms'));
+        $return = [];
+
+        foreach ($forms as $form) {
+            $return[$form->id] = [
+                'id' => $form->id,
+                'name' => $form->name,
+                'created_at' => $form->created_at,
+                'updated_at' => $form->updated_at,
+            ];
+        }
+
+        return response()->json($return);
+        // return view('formmaker.form', compact('forms'));
     }
 
     public function show($id)
