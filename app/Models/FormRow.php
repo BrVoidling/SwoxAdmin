@@ -15,6 +15,7 @@ class FormRow extends Model
         'question_id',
         'is_required',
         'is_object_identifier',
+        'volgorde',
     ];
 
     public function form()

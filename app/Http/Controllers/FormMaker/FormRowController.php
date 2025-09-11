@@ -8,12 +8,35 @@ use Illuminate\Http\Request;
 
 class FormRowController extends Controller
 {
-    public function index($form_id)
+    public function index()
     {
-        $form_rows = FormRow::where('form_id', $form_id)->get();
+        $form_rows = FormRow::all();
 
-        return view('formmaker.form_row', compact('form_rows'));
+        $return = [];
+        foreach ($form_rows as $form_row) {
+            $return[$form_row->id] = $form_row;
+        }
+        $form_rows = $return;
+
+        return response()->json($form_rows);
+
+        // return view('formmaker.form_row', compact('form_rows'));
     }
+
+    // public function index($form_id)
+    // {
+    //     $form_rows = FormRow::where('form_id', $form_id)->orderBy('volgorde')->get();
+
+    //     $return = [];
+    //     foreach ($form_rows as $form_row) {
+    //         $return[$form_row->id] = $form_row;
+    //     }
+    //     $form_rows = $return;
+
+    //     return response()->json($form_rows);
+
+    //     // return view('formmaker.form_row', compact('form_rows'));
+    // }
 
 
     public function massStore(Request $request, $form_id)

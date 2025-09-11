@@ -1,34 +1,70 @@
 <script setup>
-defineProps({
-    forms: Object,
-});
+import { ref } from 'vue';
+import { useStore } from '../store';
+import Layout from '../Components/Layout.vue';
+import FormList from '../Components/Forms/FormList.vue';
+
+const store = useStore();
+
+const newQuestion = {
+    id: null,
+    name: 'Nieuwe vraag',
+    internal_name: 'Nieuwe vraag',
+    description: '',
+    type: 'openvraag',
+    options: null
+}
+const selectedQuestionId = ref(null);
+
+const selectedQuestion = ref(newQuestion);
+
+function selectQuestion(questionId) {
+    selectedQuestionId.value = questionId;
+
+    if (questionId == null) {
+        selectedQuestion.value = newQuestion;
+    } else {
+        selectedQuestion.value = store.questions[questionId];
+    }
+}
+
+async function submit() {
+    var res = await submitQuestion(selectedQuestion.value);
+    console.log(res);
+    if (res.status != 200) {
+        alert('niet opgeslagen');
+        return;
+    }
+    if (selectedQuestionId.value == null) {
+
+        store.addQuestion(selectedQuestion.value);
+    }
+}
+
+async function submitQuestion(question) {
+    const response = await axios.post('/formmaker/question', question);
+    return response;
+}
 </script>
 
 <template>
-    <div class="flex flex-col">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                <div class="overflow-hidden">
-                    <table class="min-w-full text-left text-sm font-light">
-                        <thead class="border-b font-medium dark:border-neutral-500">
-                            <tr>
-                                <th scope="col" class="px-6 py-4">ID</th>
-                                <th scope="col" class="px-6 py-4">Name</th>
-                                <th scope="col" class="px-6 py-4">Created at</th>
-                                <th scope="col" class="px-6 py-4">Updated at</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="form in forms" :key="form.id" class="border-b dark:border-neutral-500">
-                                <td class="whitespace-nowrap px-6 py-4 font-medium">{{ form.id }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ form.name }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ form.created_at }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ form.updated_at }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    <Layout>
+        <h3 class="text-2xl font-bold">Vragen</h3>
+
+        <form @submit.prevent="submit" class="flex flex-col gap-4">
+            <label for="name">Naam</label>
+            <input type="text" id="name" v-model="selectedQuestion.name" class="border p-2">
+            <label for="internal_name">Interne naam</label>
+            <input type="text" id="internal_name" v-model="selectedQuestion.internal_name" class="border p-2">
+            <label for="description">Omschrijving</label>
+            <input type="text" id="description" v-model="selectedQuestion.description" class="border p-2">
+            <label for="type">Type</label>
+            <input type="text" id="type" v-model="selectedQuestion.type" class="border p-2">
+            <button type="submit" class="bg-blue-500 p-2 rounded">Opslaan</button>
+        </form>
+        {{ selectedQuestion }}
+        <template #sidebar>
+            <FormList :list="store.questions" :func="selectQuestion" type="Vraag"></FormList>
+        </template>
+    </Layout>
 </template>

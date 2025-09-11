@@ -13,6 +13,7 @@ class Form extends Model
         'internal_name',
         'description',
         'is_object',
+        'hoofdform_id'
     ];
 
     public function hoofdform()

@@ -11,7 +11,15 @@ class QuestionController extends Controller
     public function index()
     {
         $questions = Question::all();
-        return view('formmaker.question', compact('questions'));
+
+        $return = [];
+
+        foreach ($questions as $question) {
+            $return[$question->id] = $question;
+        }
+
+        return response()->json($return);
+        // return view('formmaker.question', compact('questions'));
     }
 
     public function show($id)
@@ -22,9 +30,11 @@ class QuestionController extends Controller
 
     public function store(Request $request)
     {
-        $input = $request->all();
-        $question = Question::create($input);
-        return redirect()->route('formmaker.question.index');
+        $input = $request->except('_token', 'id');
+        $question = Question::updateOrCreate(['id' => $request->id], $input);
+
+        return response()->json($question->id);
+        // return redirect()->route('formmaker.question.index');
     }
 
     public function update(Request $request, $id)

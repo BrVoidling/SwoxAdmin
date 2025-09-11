@@ -18,8 +18,10 @@ class FormController extends Controller
             $return[$form->id] = [
                 'id' => $form->id,
                 'name' => $form->name,
-                'created_at' => $form->created_at,
-                'updated_at' => $form->updated_at,
+                'internal_name' => $form->internal_name,
+                'description' => $form->description,
+                'is_object' => (bool)$form->is_object,
+                'hoofdform_id' => $form->hoofdform_id
             ];
         }
 
@@ -36,9 +38,10 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
-        $input = $request->all();
-        $form = Form::create($input);
-        return redirect()->route('formmaker.form.index');
+        $input = $request->except(['_token', 'id']);
+        $form = Form::updateOrCreate(['id' => $request->id], $input);
+        return response()->json($form->id);
+        // return redirect()->route('formmaker.form.index');
     }
 
     public function update(Request $request, $id)

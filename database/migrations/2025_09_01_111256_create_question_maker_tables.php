@@ -39,6 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger('question_id');
             $table->boolean('is_required')->default(false);
             $table->boolean('is_object_identifier')->default(false);
+            $table->integer('volgorde')->default(0);
             $table->timestamps();
 
             $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
