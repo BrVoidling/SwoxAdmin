@@ -17,12 +17,12 @@
 
         <div>
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-            <input name="password">
+            <input name="password" type="password">
         </div>
 
         <div>
             <label for="password_confirmation" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
-            <input name="password_confirmation">
+            <input name="password_confirmation" type="password">
         </div>
 
         <div>

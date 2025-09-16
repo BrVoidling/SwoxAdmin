@@ -12,7 +12,7 @@
 
         <div>
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-            <input name="password">
+            <input name="password" type="password">
         </div>
 
         <div>
